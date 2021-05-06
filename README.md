@@ -9,6 +9,14 @@ To print elements one per line:
 ep print
 ```
 
+If `PATH=/usr/local/bin:/usr/bin:/bin`, the output is:
+
+```
+/usr/local/bin
+/usr/bin
+/bin
+```
+
 To edit: The following `ep` commands help with editing PATH by outputting the
 desired new “`PATH=...`” string to stdout.  This alone changes nothing, but you
 can add command substitution and eval to cause changes.  The following examples
