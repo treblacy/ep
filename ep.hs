@@ -1,3 +1,6 @@
+{-# language BlockArguments #-} -- :D
+
+import Control.Monad (when)
 import Data.List (delete, intercalate)
 import Data.Maybe (fromMaybe)
 import System.Environment
@@ -40,14 +43,22 @@ main = do
             BYes -> hPutStrLn stderr (compose dirs)
             BNo  -> return ()
           s <- getContents
-          putStrLn (compose (lines s))
+          let paths = lines s
+          mapM_ sanityCheck paths
+          putStrLn (compose paths)
       Delete s -> putStrLn (compose (delete s dirs))
-      Prepend s -> putStrLn (compose (s : dirs))
-      Append s -> putStrLn (compose (dirs ++ [s]))
+      Prepend s -> sanityCheck s >> putStrLn (compose (s : dirs))
+      Append s -> sanityCheck s >> putStrLn (compose (dirs ++ [s]))
 
 chop path = case break (':' ==) path of
   (p1, ':' : more) -> p1 : chop more
   ("", _) -> []
   (p1, _) -> [p1]
+
+-- Sanity check of an input pathname: Free of colons.
+-- We go ahead and abort the whole program when failure.
+sanityCheck path = when (':' `elem` path) do
+    hPutStrLn stderr ("Colon disallowed in " ++ path)
+    exitFailure
 
 compose dirs = "PATH=" ++ intercalate ":" dirs
