@@ -16,9 +16,9 @@ helpmsg =
     \read's -b dumps backup \"PATH=...\" to stderr so you have a backup\n\
     \Examples:\n\
     \ep print\n\
-    \eval $(ep print | sed -e s/6/7/ | ep read)\n\
-    \eval $(ep delete /usr/local/sbin)\n\
-    \eval $(ep append /usr/local/jdk/bin)\n"
+    \eval \"$(ep print | sed -e s/6/7/ | ep read)\"\n\
+    \eval \"$(ep delete /usr/local/sbin)\"\n\
+    \eval \"$(ep append /usr/local/jdk/bin)\"\n"
 
 rejectmsg = "ep: invalid arg. ep --help for args."
 
@@ -61,4 +61,4 @@ sanityCheck path = when (':' `elem` path) do
     hPutStrLn stderr ("Colon disallowed in " ++ path)
     exitFailure
 
-compose dirs = "PATH=" ++ intercalate ":" dirs
+compose dirs = "PATH='" ++ intercalate ":" dirs ++ "'"
