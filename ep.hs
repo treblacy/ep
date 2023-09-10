@@ -13,12 +13,12 @@ data Backup = BYes | BNo
 helpmsg =
     "ep prints or edits elements of PATH\n\
     \ep --help | -h | print | read [-b] | delete DIR | prepend DIR | append DIR\n\
-    \read's -b dumps backup \"PATH=...\" to stderr so you have a backup\n\
+    \read's -b dumps previous PATH to stderr so you have a backup\n\
     \Examples:\n\
     \ep print\n\
-    \eval \"$(ep print | sed -e s/6/7/ | ep read)\"\n\
-    \eval \"$(ep delete /usr/local/sbin)\"\n\
-    \eval \"$(ep append /usr/local/jdk/bin)\"\n"
+    \PATH=$(ep print | sed -e s/6/7/ | ep read)\n\
+    \PATH=$(ep delete /usr/local/sbin)\n\
+    \PATH=$(ep append /usr/local/jdk/bin)\n"
 
 rejectmsg = "ep: invalid arg. ep --help for args."
 
@@ -61,4 +61,4 @@ sanityCheck path = when (':' `elem` path) do
     hPutStrLn stderr ("Colon disallowed in " ++ path)
     exitFailure
 
-compose dirs = "PATH='" ++ intercalate ":" dirs ++ "'"
+compose dirs = intercalate ":" dirs
